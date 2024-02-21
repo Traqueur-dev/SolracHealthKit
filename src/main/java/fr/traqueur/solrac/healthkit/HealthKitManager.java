@@ -3,6 +3,7 @@ package fr.traqueur.solrac.healthkit;
 import fr.traqueur.solrac.healthkit.exceptions.HealthKitNoExistException;
 import fr.traqueur.solrac.healthkit.exceptions.HealthKitWrongMaterialException;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -54,8 +55,12 @@ public class HealthKitManager {
         }
 
         event.setCancelled(true);
+
+        double health = player.getHealth() + HEALTH_TO_GIVE*2;
+        double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+
         item.setAmount(0);
-        player.setHealth(player.getHealth() + HEALTH_TO_GIVE*2);
+        player.setHealth(Math.min(health, maxHealth));
     }
 
     private boolean isHealthKit(ItemStack item) {
